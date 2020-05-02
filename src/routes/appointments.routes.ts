@@ -1,35 +1,35 @@
 import { Router } from 'express';
+import { getCustomRepository } from 'typeorm';
 import { parseISO } from 'date-fns';
 // Repositório do agendamento
 import AppointmentRepository from '../repositories/AppointmentsRepository';
 // Serviço de criação de agendamento
 import CreateAppointmentService from '../services/CreateAppointmentService';
+
 // Rota do agendamento
 const appointmentRouter = Router();
-// Criando instancia Repositório do agendamento
-const appointmentRepository = new AppointmentRepository();
 
-appointmentRouter.get('/', (request, response) => {
+appointmentRouter.get('/', async (request, response) => {
+  // Gerando repositório
+  const appointmentRepository = getCustomRepository(AppointmentRepository);
   // Lista de agendamentos
-  const appointments = appointmentRepository.all();
+  const appointments = await appointmentRepository.find();
   // Retorno para o usuário
   return response.json(appointments);
 });
 
-appointmentRouter.post('/', (request, response) => {
+appointmentRouter.post('/', async (request, response) => {
   try {
     // Recebendo dados do usuário
-    const { provider, date } = request.body;
+    const { provider_id, date } = request.body;
 
     // Conversão de data
     const parseDate = parseISO(date);
     // Instanciando serviço de criação de agendamento
-    const createAppointment = new CreateAppointmentService(
-      appointmentRepository,
-    );
+    const createAppointment = new CreateAppointmentService();
     // Criando agendamento através do serviço
-    const appointment = createAppointment.execute({
-      provider,
+    const appointment = await createAppointment.execute({
+      provider_id,
       date: parseDate,
     });
     // Retorno para o usuário

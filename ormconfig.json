@@ -1,0 +1,13 @@
+{
+  "type": "postgres",
+  "host": "31.220.49.43",
+  "port": 5432,
+  "username": "postgres",
+  "password": "genleito",
+  "database": "gostack",
+  "entities": ["./src/models/*.ts"],
+  "migrations": ["./src/database/migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "./src/database/migrations"
+  }
+}

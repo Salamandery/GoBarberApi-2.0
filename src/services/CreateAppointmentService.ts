@@ -1,4 +1,5 @@
 import { startOfHour } from 'date-fns';
+import { getCustomRepository } from 'typeorm';
 // Modelo de agendamento
 import Appointment from '../models/Appointment';
 // Repositório de agendamento
@@ -6,27 +7,19 @@ import AppointmentRepository from '../repositories/AppointmentsRepository';
 
 // Interface dos dados recebidos
 interface Request {
-  provider: string;
+  provider_id: string;
   date: Date;
 }
 
 class CreateAppointmentService {
-  // repositório temporário de agendamento
-  private appointmentRepository: AppointmentRepository;
-
-  // Inicia instancia do serviço
-  constructor(appointmentRepository: AppointmentRepository) {
-    // Iniciando repositório de agendamento
-    this.appointmentRepository = appointmentRepository;
-  }
-
   // Executa o serviço
-  public execute({ provider, date }: Request): Appointment {
+  public async execute({ provider_id, date }: Request): Promise<Appointment> {
+    const appointmentRepository = getCustomRepository(AppointmentRepository);
     // Conversão de data por hora
     const appointmentDate = startOfHour(date);
 
     // Verificação de agendamento por data
-    const findAppointmentInSameDate = this.appointmentRepository.findByDate(
+    const findAppointmentInSameDate = await appointmentRepository.findByDate(
       appointmentDate,
     );
 
@@ -36,10 +29,12 @@ class CreateAppointmentService {
     }
 
     // Criando agendamento no repositório
-    const appointment = this.appointmentRepository.create({
-      provider,
+    const appointment = appointmentRepository.create({
+      provider_id,
       date: appointmentDate,
     });
+    // Salvando informação no banco de dados
+    await appointmentRepository.save(appointment);
     // Retornando criação do agendamento
     return appointment;
   }
