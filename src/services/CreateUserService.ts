@@ -1,5 +1,6 @@
 import { getRepository } from 'typeorm';
 import { hash } from 'bcryptjs';
+import AppError from '../errors/AppError';
 import User from '../models/User';
 
 // Interface de dados solicitados
@@ -18,7 +19,7 @@ class CreateUserService {
     });
     // Se existe gera erro
     if (Exists) {
-      throw new Error('User already exists.');
+      throw new AppError('User already exists.', 400);
     }
 
     // Criptografia de senha

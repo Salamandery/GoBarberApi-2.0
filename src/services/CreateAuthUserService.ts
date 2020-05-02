@@ -1,6 +1,7 @@
 import { getRepository } from 'typeorm';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import AppError from '../errors/AppError';
 import User from '../models/User';
 import authConfig from '../config/auth';
 
@@ -26,13 +27,13 @@ class CreateAuthUserService {
     });
     // Senão encontrar resultado gera erro
     if (!user) {
-      throw new Error('Incorrect email/password combination');
+      throw new AppError('Incorrect email/password combination', 401);
     }
     // Comparando senha do usuário encontrado com senha recebida
     const passwordMatched = await compare(password, user.password);
     // Se senha não bater gera erro
     if (!passwordMatched) {
-      throw new Error('Incorrect email/password combination');
+      throw new AppError('Incorrect email/password combination', 401);
     }
     // Removendo a senha do usuário
     delete user.password;
