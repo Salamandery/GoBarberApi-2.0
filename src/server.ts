@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import 'express-async-errors';
 // Rotas do servidor
@@ -11,6 +12,8 @@ import './database';
 import AppError from './errors/AppError';
 // Instanciando servidor
 const app = express();
+// Configurando cors
+app.use(cors());
 // Configurando servidor pra ler json
 app.use(express.json());
 // Rota de arquivos
