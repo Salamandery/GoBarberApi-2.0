@@ -12,7 +12,7 @@ import './database';
 import AppError from './errors/AppError';
 // Instanciando servidor
 const app = express();
-// Configurando cors
+// Configurando Cors permissões de rotas
 app.use(cors());
 // Configurando servidor pra ler json
 app.use(express.json());
