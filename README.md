@@ -344,13 +344,3 @@ by **Rodolfo M. F. Abreu**
   <img src="https://img.shields.io/badge/Feito%20com%20%E2%9D%A4%20por-Rocketseat-blueviolet" />
 </p>
 
-
----
-
-<div align="center">
-
-<img src="https://img.shields.io/badge/Feito%20com%20%E2%9D%A4%20por-Rocketseat-blueviolet" />
-
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Salamandery)
-
-</div>
